@@ -26,6 +26,14 @@ public class SpuDTO {
     private Date createTime;// 创建时间
     private String categoryName; // 商品分类名称拼接
     private String brandName;// 品牌名称
+    /**
+     * 商品详情
+     */
+    private SpuDetailDTO spuDetail;
+    /**
+     * spu下的sku的集合
+     */
+    private List<SkuDTO> skus;
 
     @JsonIgnore
     public List<Long> getCategoryIds(){

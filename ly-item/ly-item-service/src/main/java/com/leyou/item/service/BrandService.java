@@ -153,4 +153,15 @@ public class BrandService {
         }
         return BeanHelper.copyProperties(brand,BrandDTO.class);
     }
+
+    public List<BrandDTO> queryBrandById(Long categoryId) {
+        //1.自定义查询sql的方法
+        List<Brand> list = brandMapper.queryBrandBycategoryId(categoryId);
+        //2.判断集合是否不为空，抛出异常信息
+        if (CollectionUtils.isEmpty(list)) {
+            throw new LyException(ExceptionEnum.BRAND_NOT_FOUND);
+        }
+        //3.转换对象类型返回
+        return BeanHelper.copyWithCollection(list,BrandDTO.class);
+    }
 }

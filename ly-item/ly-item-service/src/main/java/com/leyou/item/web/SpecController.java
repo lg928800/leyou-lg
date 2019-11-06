@@ -36,13 +36,17 @@ public class SpecController {
 
     /**
      * 通过id查询规格参数的详细信息
+     * 在原来只查询gid的基础上添加参数cid分类id,以及是否参与搜索
      * @param gid
      * @return
      */
     @GetMapping("/params")
-    public ResponseEntity<List<SpecParamDTO>> querySpecParams(@RequestParam("gid") Long gid) {
+    public ResponseEntity<List<SpecParamDTO>> querySpecParams(
+            @RequestParam(value = "gid",required = false) Long gid,
+            @RequestParam(value = "cid",required = false) Long cid,
+            @RequestParam(value = "searching",required = false) Boolean searching) {
         //直接返回查询结果即可
-        return ResponseEntity.ok(specService.querySpecParams(gid));
+        return ResponseEntity.ok(specService.querySpecParams(gid,cid,searching));
     }
 
     /**

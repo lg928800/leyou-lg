@@ -11,6 +11,7 @@ import com.leyou.item.mapper.ParamMapper;
 import com.leyou.item.mapper.SpecGroupMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.util.List;
@@ -54,10 +55,16 @@ public class SpecService {
      * @param gid
      * @return
      */
-    public List<SpecParamDTO> querySpecParams(Long gid) {
-        //1.查询规格组参数和查询规格组的信息逻辑差不多，将参数id封装到specparam对象中
+    public List<SpecParamDTO> querySpecParams(Long gid,Long cid,Boolean searching) {
+        //1.1判断参数是否传递成功
+        if (gid == null && cid == null && searching == null) {
+            throw new LyException(ExceptionEnum.INVALID_PARAMETER);
+        }
+        //1.2查询规格组参数和查询规格组的信息逻辑差不多，将参数封装到specparam对象中
         SpecParam param = new SpecParam();
         param.setGroupId(gid);
+        param.setCid(cid);
+        param.setSearching(searching);
         //2.调用mapper层查询数据
         List<SpecParam> params = paramMapper.select(param);
         //3.判空数据，判处异常
@@ -73,6 +80,7 @@ public class SpecService {
      * 添加规格组信息
      * @param specGroupDTO
      */
+    @Transactional
     public void addSpecGroup(SpecGroupDTO specGroupDTO) {
         //1.因为是向数据库中添加数据，所以这里我们把dto的对象转换成specgroup类型的对象
         SpecGroup specGroup = BeanHelper.copyProperties(specGroupDTO, SpecGroup.class);
@@ -90,6 +98,7 @@ public class SpecService {
      * 修改规格组的数据
      * @param specGroupDTO
      */
+    @Transactional
     public void editSpecGroup(SpecGroupDTO specGroupDTO) {
         //1.将dto类型的数据转换成specgroup类型的数据
         SpecGroup specGroup = BeanHelper.copyProperties(specGroupDTO, SpecGroup.class);
@@ -121,6 +130,7 @@ public class SpecService {
      * 添加规格参数数据
      * @param specParamDTO
      */
+    @Transactional
     public void addSpecParam(SpecParamDTO specParamDTO) {
         //1.转换数据类型
         SpecParam specParam = BeanHelper.copyProperties(specParamDTO, SpecParam.class);
