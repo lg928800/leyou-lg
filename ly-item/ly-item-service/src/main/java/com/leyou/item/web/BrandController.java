@@ -81,7 +81,7 @@ public class BrandController {
     }
 
     /**
-     * 根据id查询品牌信息
+     * 根据分类id查询品牌信息
      * @param categoryId
      * @return
      */
@@ -90,6 +90,12 @@ public class BrandController {
         //1.调用service查询数据
         //2.返回数据
         return ResponseEntity.ok(brandService.queryBrandById(categoryId));
+    }
+
+    @GetMapping("{id}")
+    public ResponseEntity<BrandDTO> queryById(@PathVariable("id")Long id) {
+        // 直接返回数据
+        return ResponseEntity.ok(brandService.queryById(id));
 
     }
 }

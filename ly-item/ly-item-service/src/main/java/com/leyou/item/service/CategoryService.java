@@ -36,6 +36,11 @@ public class CategoryService {
         return BeanHelper.copyWithCollection(list,CategoryDTO.class);
     }
 
+    /**
+     * 通过品牌id查询分类数据
+     * @param brandId
+     * @return
+     */
     public List<CategoryDTO> queryListByBrandId(Long brandId) {
         //1.通过id查询分类的数据
         List<Category> list = categoryMapper.queryByBrandId(brandId);

@@ -224,7 +224,10 @@ public class GoodsService {
         }
         return BeanHelper.copyProperties(spuDetail,SpuDetailDTO.class);
     }
-
+    @Transactional
+    /**
+     * 修改商品数据
+     */
     public void updateGoods(SpuDTO spuDTO) {
         //1.这里我们可以直接修改spu表中的数据
         SPU spu = BeanHelper.copyProperties(spuDTO, SPU.class);

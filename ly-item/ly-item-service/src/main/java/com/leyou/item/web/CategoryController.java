@@ -38,4 +38,9 @@ public class CategoryController {
 
     }
 
+    @GetMapping("/list")
+    public ResponseEntity<List<CategoryDTO>> queryCategoryByIds(@RequestParam("ids") List<Long> idList) {
+        return ResponseEntity.ok(categoryService.queryCategoryByIds(idList));
+    }
+
 }
