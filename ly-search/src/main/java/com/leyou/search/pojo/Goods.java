@@ -23,10 +23,15 @@ import java.util.Set;
 @Document(indexName = "goods", type = "docs", shards = 1, replicas = 1)
 public class Goods {
     @Id
+    @Field(type = FieldType.Keyword)
     private Long id; // spuId
+    @Field(type = FieldType.Keyword,index = false)
     private String subTitle;// 卖点
+    @Field(type = FieldType.Keyword,index = false)
     private String skus;// sku信息的json结构
 
+
+    @Field(type = FieldType.Text,analyzer = "ik_max_word")
     private String all; // 所有需要被搜索的信息，包含标题，分类，甚至品牌
     private Long brandId;// 品牌id
     private Long categoryId;// 商品3级分类id

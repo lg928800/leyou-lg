@@ -79,7 +79,7 @@ public class GoodsService {
         //7.据说是调用方法出去分类和品牌查询
         handleCategoryAndBrandName(spuDTOS);
         //8.返回数据
-        return new PageResult<>(info.getTotal(), spuDTOS);
+        return new PageResult<>(info.getTotal(),info.getPages(), spuDTOS);
     }
 
     /**
@@ -206,7 +206,7 @@ public class GoodsService {
         return spuDTO;
     }
 
-    private List<SkuDTO> querySkuBySpuId(Long id) {
+    public List<SkuDTO> querySkuBySpuId(Long id) {
         Sku sku = new Sku();
         sku.setSpuId(id);
         List<Sku> list = skuMapper.select(sku);
@@ -216,7 +216,7 @@ public class GoodsService {
         return BeanHelper.copyWithCollection(list,SkuDTO.class);
     }
 
-    private SpuDetailDTO querySpuDetailBySpuId(Long id) {
+    public SpuDetailDTO querySpuDetailBySpuId(Long id) {
         SpuDetail spuDetail = spuDetailMapper.selectByPrimaryKey(id);
         //转换类型
         if (spuDetail == null) {

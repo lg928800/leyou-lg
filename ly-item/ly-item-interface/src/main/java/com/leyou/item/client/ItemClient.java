@@ -1,10 +1,7 @@
 package com.leyou.item.client;
 
 import com.leyou.common.vo.PageResult;
-import com.leyou.item.dto.BrandDTO;
-import com.leyou.item.dto.CategoryDTO;
-import com.leyou.item.dto.SpecParamDTO;
-import com.leyou.item.dto.SpuDTO;
+import com.leyou.item.dto.*;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -53,6 +50,22 @@ public interface ItemClient {
      */
     @GetMapping("/spu/detail/{id}")
     SpuDTO querySpuById(@PathVariable("id") Long id);
+
+    /**
+     * 通过spuid查询skus
+     * @param id 这里是spu的id
+     * @return List<SkuDTO>
+     */
+    @GetMapping("/sku/of/spu")
+    List<SkuDTO> querySkuBySpuId(@RequestParam("id") Long id);
+
+    /**
+     * 通过spuID查询spuDetailDto
+     * @param id spu的id
+     * @return SpuDetailDTO
+     */
+    @GetMapping("/detail/{id}")
+    SpuDetailDTO queryDetailBySpuId(@PathVariable("id")Long id);
 
     /**
      * 通过规格组合规格参数的id来查询规格信息

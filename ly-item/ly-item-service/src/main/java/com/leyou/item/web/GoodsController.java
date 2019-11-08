@@ -1,12 +1,17 @@
 package com.leyou.item.web;
 
 import com.leyou.common.vo.PageResult;
+import com.leyou.item.dto.SkuDTO;
 import com.leyou.item.dto.SpuDTO;
+import com.leyou.item.dto.SpuDetailDTO;
 import com.leyou.item.service.GoodsService;
+import com.sun.org.apache.regexp.internal.RE;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @version V1.0
@@ -70,5 +75,15 @@ public class GoodsController {
         goodsService.updateGoods(spuDTO);
         // 修改数据，直接返回修改成功的响应
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @GetMapping("/sku/of/spu")
+    public ResponseEntity<List<SkuDTO>> querySkuBySpuId(@RequestParam("id") Long id) {
+        return ResponseEntity.ok(goodsService.querySkuBySpuId(id));
+    }
+
+    @GetMapping("/detail/{id}")
+    public ResponseEntity<SpuDetailDTO>  queryDetailBySpuId(@PathVariable("id")Long id) {
+        return ResponseEntity.ok(goodsService.querySpuDetailBySpuId(id));
     }
 }
