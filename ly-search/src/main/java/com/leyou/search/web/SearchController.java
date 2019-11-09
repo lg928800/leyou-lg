@@ -6,10 +6,10 @@ import com.leyou.search.dto.SearchRequest;
 import com.leyou.search.service.SearchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * @version V1.0
@@ -22,10 +22,21 @@ public class SearchController {
     @Autowired
     private SearchService searchService;
 
+    /**
+     * 搜索功能
+     * @param request
+     * @return
+     */
     @PostMapping("/page")
     public ResponseEntity<PageResult<GoodsDTO>> search(@RequestBody SearchRequest request) {
         //直接返回结果
         return ResponseEntity.ok(searchService.search(request));
 
+    }
+
+    @PostMapping("/filter")
+    public ResponseEntity<Map<String, List<?>>> queryFilters(@RequestBody SearchRequest request) {
+        // 直接返回结果
+        return ResponseEntity.ok(searchService.queryFilters(request));
     }
 }

@@ -1,9 +1,43 @@
 package com.leyou.search.dto;
 
+import java.util.Map;
+
 public class SearchRequest {
     private String key;// 搜索条件
 
     private Integer page;// 当前页
+
+    private String sortBy; // 排序
+
+    private Boolean desc;
+
+    private Map<String,String> filter;
+
+    public String getSortBy() {
+        return sortBy;
+    }
+
+    public void setSortBy(String sortBy) {
+        this.sortBy = sortBy;
+    }
+
+    public Boolean getDesc() {
+        return desc;
+    }
+
+    public void setDesc(Boolean desc) {
+        this.desc = desc;
+    }
+
+
+
+    public Map<String, String> getFilter() {
+        return filter;
+    }
+
+    public void setFilter(Map<String, String> filter) {
+        this.filter = filter;
+    }
 
     private static final Integer DEFAULT_SIZE = 20;// 每页大小，不从页面接收，而是固定大小
     private static final Integer DEFAULT_PAGE = 1;// 默认页

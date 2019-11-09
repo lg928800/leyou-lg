@@ -154,6 +154,11 @@ public class BrandService {
         return BeanHelper.copyProperties(brand,BrandDTO.class);
     }
 
+    /**
+     * 根据分类id查询品牌信息
+     * @param categoryId
+     * @return
+     */
     public List<BrandDTO> queryBrandById(Long categoryId) {
         //1.自定义查询sql的方法
         List<Brand> list = brandMapper.queryBrandBycategoryId(categoryId);
@@ -163,5 +168,20 @@ public class BrandService {
         }
         //3.转换对象类型返回
         return BeanHelper.copyWithCollection(list,BrandDTO.class);
+    }
+
+    /**
+     * 根据ids查询品牌信息
+     * @param ids
+     * @return
+     */
+    public List<BrandDTO> queryByIds(List<Long> ids) {
+        // 1.调用mapper查询集合ids
+        List<Brand> brandList = brandMapper.selectByIdList(ids);
+        if (CollectionUtils.isEmpty(brandList)) {
+            throw new LyException(ExceptionEnum.BRAND_NOT_FOUND);
+        }
+        // 2.转换数据类型
+        return BeanHelper.copyWithCollection(brandList, BrandDTO.class);
     }
 }

@@ -79,4 +79,12 @@ public interface ItemClient {
             @RequestParam(value = "gid", required = false) Long gid,
             @RequestParam(value = "cid", required = false) Long cid,
             @RequestParam(value = "searching", required = false) Boolean searching);
+
+    /**
+     * 根据id集合查询品牌信息
+     * @param ids
+     * @return
+     */
+    @GetMapping("/brand/list")
+    List<BrandDTO> queryByIds(@RequestParam("ids") List<Long> ids);
 }

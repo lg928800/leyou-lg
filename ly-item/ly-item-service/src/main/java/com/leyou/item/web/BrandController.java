@@ -92,10 +92,26 @@ public class BrandController {
         return ResponseEntity.ok(brandService.queryBrandById(categoryId));
     }
 
+    /**
+     * 根据spuId查询detail数据
+     * @param id spuId
+     * @return BRANDDTO
+     */
     @GetMapping("{id}")
     public ResponseEntity<BrandDTO> queryById(@PathVariable("id")Long id) {
         // 直接返回数据
         return ResponseEntity.ok(brandService.queryById(id));
 
+    }
+
+    /**
+     * 根据id集合查询品牌信息
+     * @param ids
+     * @return
+     */
+    @GetMapping("/list")
+    public ResponseEntity<List<BrandDTO>> queryByIds(@RequestParam("ids") List<Long> ids) {
+        // 直接返回数据
+        return ResponseEntity.ok(brandService.queryByIds(ids));
     }
 }
