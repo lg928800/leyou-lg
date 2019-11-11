@@ -87,4 +87,11 @@ public interface ItemClient {
      */
     @GetMapping("/brand/list")
     List<BrandDTO> queryByIds(@RequestParam("ids") List<Long> ids);
+    /**
+     * 通过id查询规格组及其参数的数据信息
+     * @param id 商品分类的id
+     * @return 规格组数据集合里面包含了规格参数的数据集合
+     */
+    @GetMapping("/spec/of/category")
+    List<SpecGroupDTO> querySpecsByCid(@RequestParam("id") Long id);
 }

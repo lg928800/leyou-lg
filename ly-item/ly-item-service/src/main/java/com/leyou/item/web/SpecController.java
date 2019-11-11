@@ -3,6 +3,7 @@ package com.leyou.item.web;
 import com.leyou.item.dto.SpecGroupDTO;
 import com.leyou.item.dto.SpecParamDTO;
 import com.leyou.item.service.SpecService;
+import com.sun.org.apache.regexp.internal.RE;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -120,4 +121,16 @@ public class SpecController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
 
     }
+
+    /**
+     * 通过id查询规格组及其参数的数据信息
+     * @param id 商品分类的id
+     * @return 规格组数据集合里面包含了规格参数的数据集合
+     */
+    @GetMapping("/of/category")
+    public ResponseEntity<List<SpecGroupDTO>> querySpecsByCid(@RequestParam("id") Long id) {
+        // 直接返回结果即可
+        return ResponseEntity.ok(specService.querySpecsByCid(id));
+    }
+
 }

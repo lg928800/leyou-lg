@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -65,6 +66,35 @@ public class CategoryService {
             throw new LyException(ExceptionEnum.CATEGORY_NOT_FOUND);
         }
         return BeanHelper.copyWithCollection(list,CategoryDTO.class);
+
+    }
+
+    /**
+     * 通过cid3查询二级和一级分类属性
+     * @param id 三级分类的id
+     * @return 分类数据的集合
+     */
+    public List<CategoryDTO> queryCategoryByCid3(Long id) {
+        // 1.先通过3级分类的id查询到分类数据
+        Category c3 = categoryMapper.selectByPrimaryKey(id);
+        if (c3 == null) {
+            throw new LyException(ExceptionEnum.CATEGORY_NOT_FOUND);
+        }
+        // 2.在通过3级分类的数据获得2级分类的id进行查询,以此类推
+        Category c2 = categoryMapper.selectByPrimaryKey(c3.getParentId());
+        if (c2 == null) {
+            throw new LyException(ExceptionEnum.CATEGORY_NOT_FOUND);
+        }
+        // 3.1级分类的查询
+        Category c1 = categoryMapper.selectByPrimaryKey(c2.getParentId());
+        if (c1 == null) {
+            throw new LyException(ExceptionEnum.CATEGORY_NOT_FOUND);
+        }
+        // 4.将3个id添加到集合中
+        List<Category> list = Arrays.asList(c1, c2, c3);
+        // 5.转换数据类型
+        return BeanHelper.copyWithCollection(list,CategoryDTO.class);
+
 
     }
 }

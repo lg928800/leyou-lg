@@ -15,6 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @version V1.0
@@ -170,5 +172,27 @@ public class SpecService {
         if (i !=1) {
             throw new LyException(ExceptionEnum.DELETE_OPERATION_FAIL);
         }
+    }
+
+    /**
+     * 查询规格组及规格参数的信息
+     * @param id
+     * @return
+     */
+    public List<SpecGroupDTO> querySpecsByCid(Long id) {
+        // 1.调用本类中的方法来查询规格组的信息
+        List<SpecGroupDTO> groupDTOList = queryGroupByCategory(id);
+        // 2.同样是调用方法查询规格参数的信息
+        List<SpecParamDTO> paramDTOList = querySpecParams(null, id, null);
+        // 2.1.这里通过流来讲规格参数转换成map的集合，key是规格组的id，value是规格参数的集合
+        Map<Long, List<SpecParamDTO>> map = paramDTOList.stream()
+                .collect(Collectors.groupingBy(SpecParamDTO::getGroupId));
+
+        // 3.遍历规格组集合，然后通过规格组的id获取map中的value属性，并添加到params的属性中
+        for (SpecGroupDTO groupDTO : groupDTOList) {
+            groupDTO.setParams(map.get(groupDTO.getId()));
+        }
+        return groupDTOList;
+
     }
 }
