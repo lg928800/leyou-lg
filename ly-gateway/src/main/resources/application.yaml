@@ -24,3 +24,4 @@ zuul:
     item-service: /item/** # 将商品微服务映射到/item/**
     upload-service: /upload/** # 将商品微服务映射到/upload/**
     search-service: /search/** # 将elasticsearch服务映射到/search/**
+    user-service: /user/** # 将user服务映射到/user/**

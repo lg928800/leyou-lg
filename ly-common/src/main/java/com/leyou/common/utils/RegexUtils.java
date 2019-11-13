@@ -24,6 +24,15 @@ public class RegexUtils {
         return matches(email, RegexPatterns.EMAIL_REGEX);
     }
 
+    /**
+     * 是否符合验证码格式
+     * @param code 要校验的验证码
+     * @return true:符合，false：不符合
+     */
+    public static boolean isVerifyCode(String code){
+        return matches(code, RegexPatterns.CODE_REGEX);
+    }
+
     private static boolean matches(String str, String regex){
         if (StringUtils.isBlank(str)) {
             return false;

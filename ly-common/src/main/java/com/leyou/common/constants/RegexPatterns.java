@@ -16,5 +16,9 @@ public abstract class RegexPatterns {
      * 用户名正则
      */
     public static final String USERNAME_REGEX = "^\\w{4,32}$";
+    /**
+     * 验证码正则
+     */
+    public static final String CODE_REGEX = "^[a-zA-Z0-9]{1,6}$";
 
 }

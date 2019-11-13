@@ -1,0 +1,20 @@
+server:
+  port: 8086
+spring:
+  application:
+    name: sms-service
+  rabbitmq:
+    host: 192.168.20.110
+    username: lg9288
+    password: lg9288
+    virtual-host: /
+ly:
+  sms:
+    accessKeyID: LTAI4FvpYGLnwFcv9zTig82v # 你自己的accessKeyId
+    accessKeySecret: ru85vCZflyC5wKlAlakp277ksqsEMM # 你自己的AccessKeySecret
+    signName: 阿克曼三笠    # 签名名称
+    verifyCodeTemplate: SMS_175475152 # 模板名称
+    domain: dysmsapi.aliyuncs.com # 域名
+    action: SendSMS # API类型，发送短信
+    version: 2017-05-25 # API版本，固定值
+    regionID: cn-hangzhou # 区域id

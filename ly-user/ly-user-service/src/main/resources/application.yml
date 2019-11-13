@@ -1,40 +1,36 @@
 server:
-  port: 8081
+  port: 8085
 spring:
   application:
-    name: item-service
+    name: user-service
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
     url: jdbc:mysql://localhost:3306/leyou
     username: root
     password: root
+  redis:
+    host: 192.168.20.110
   rabbitmq:
     host: 192.168.20.110
     username: lg9288
     password: lg9288
     virtual-host: /
-    template:
-      retry:
-        enabled: true
-        initial-interval: 10000ms
-        max-interval: 800000ms
-        multiplier: 2
-    publisher-confirms: true
 eureka:
   client:
     service-url:
       defaultZone: http://127.0.0.1:10086/eureka
   instance:
-    prefer-ip-address: true
     ip-address: 127.0.0.1
+    prefer-ip-address: true
 mybatis:
-  type-aliases-package: com.leyou.item.entity
+  type-aliases-package: com.leyou.user.entity
   configuration:
     map-underscore-to-camel-case: true
-  mapper-locations: mappers/*.xml
-
 logging:
   level:
     com.leyou: debug
-mapper:
-  wrap-keyword: "`{0}`"
+ly:
+  encoder:
+    crypt:
+      secret: ${random.uuid} # 随机的密钥，使用uuid
+      strength: 10 # 加密强度4~31，决定了密码和盐加密时的运算次数，超过10以后加密耗时会显著增加

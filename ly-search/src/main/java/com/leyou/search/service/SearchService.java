@@ -10,6 +10,7 @@ import com.leyou.item.dto.*;
 import com.leyou.search.dto.GoodsDTO;
 import com.leyou.search.dto.SearchRequest;
 import com.leyou.search.pojo.Goods;
+import com.leyou.search.repository.GoodsRepository;
 import com.netflix.config.AggregatedConfiguration;
 import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.index.query.BoolQueryBuilder;
@@ -47,7 +48,8 @@ public class SearchService {
     //注入itemClient
     @Autowired
     private ItemClient itemClient;
-
+    @Autowired
+    private GoodsRepository goodsRepository;
     /**
      * spu 转换goods
      *
@@ -69,7 +71,7 @@ public class SearchService {
         //2.通过spu来查询品牌标题
         String brandName = spu.getBrandName();
         if (StringUtils.isBlank(brandName)) {
-            brandName = itemClient.queryById(spuId).getName();
+            brandName = itemClient.queryById(spu.getBrandId()).getName();
         }
         //3.拼接name的属性，与goods中的all对应
         String all = spu.getName() + categoryNames + brandName;
@@ -373,5 +375,26 @@ public class SearchService {
         List<CategoryDTO> categoryDTOS = itemClient.queryCategoryByIds(idlist);
         filterList.put("分类", categoryDTOS);
         return idlist;
+    }
+
+    /**
+     * 监听队列方法，获取消息
+     * @param spuId
+     */
+    public void createIndex(Long spuId) {
+        // 1.通过id先查询spu的对象
+        SpuDTO spu = itemClient.querySpuById(spuId);
+        // 2.然后将spu对象转换成goods商品对象
+        Goods goods = buildGoods(spu);
+        // 3.调用工具类添加到索引库中
+        goodsRepository.save(goods);
+    }
+
+    /**
+     * 监听队列删除索引库
+     * @param spuId
+     */
+    public void deleteById(Long spuId) {
+        goodsRepository.deleteById(spuId);
     }
 }

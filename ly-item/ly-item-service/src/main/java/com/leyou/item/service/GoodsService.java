@@ -14,6 +14,7 @@ import com.leyou.item.mapper.SkuMapper;
 import com.leyou.item.mapper.SpuDetailMapper;
 import com.leyou.item.mapper.SpuMapper;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +23,10 @@ import tk.mybatis.mapper.entity.Example;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.leyou.common.constants.MQConstants.Exchange.ITEM_EXCHANGE_NAME;
+import static com.leyou.common.constants.MQConstants.RoutingKey.ITEM_DOWN_KEY;
+import static com.leyou.common.constants.MQConstants.RoutingKey.ITEM_UP_KEY;
 
 /**
  * @version V1.0
@@ -152,7 +157,8 @@ public class GoodsService {
             throw new LyException(ExceptionEnum.INSERT_OPERATION_FAIL);
         }
     }
-
+    @Autowired
+    private AmqpTemplate amqpTemplate;
     /**
      * 修改商品上架或者下架
      * @param id
@@ -180,6 +186,9 @@ public class GoodsService {
         if (count != size) {
             throw new LyException(ExceptionEnum.UPDATE_OPERATION_FAIL);
         }
+        // 3.新增发送mq消息队列
+        String key = saleable ? ITEM_UP_KEY : ITEM_DOWN_KEY;
+        amqpTemplate.convertAndSend(ITEM_EXCHANGE_NAME,key,spu.getId());
     }
 
     /**

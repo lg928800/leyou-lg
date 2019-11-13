@@ -1,5 +1,6 @@
 package com.leyou.page.service;
 
+import com.leyou.common.enums.ExceptionEnum;
 import com.leyou.common.exceptions.LyException;
 import com.leyou.item.client.ItemClient;
 import com.leyou.item.dto.BrandDTO;
@@ -85,4 +86,16 @@ public class PageService {
         }
     }
 
+    public void deleteItemHtml(Long spuId) {
+        // 1.先获取本地的文件路径
+        File file = new File(HTML_DIR, spuId + ".html");
+        if (file.exists()) {
+            if (!file.delete()) {
+                throw new LyException(ExceptionEnum.FILE_WRITER_ERROR);
+            }
+        }
+
+
+
+    }
 }
