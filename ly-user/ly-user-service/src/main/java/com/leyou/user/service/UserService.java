@@ -3,7 +3,9 @@ package com.leyou.user.service;
 import com.leyou.common.constants.MQConstants;
 import com.leyou.common.enums.ExceptionEnum;
 import com.leyou.common.exceptions.LyException;
+import com.leyou.common.utils.BeanHelper;
 import com.leyou.common.utils.RegexUtils;
+import com.leyou.user.dto.UserDTO;
 import com.leyou.user.entity.User;
 import com.leyou.user.mapper.UserMapper;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -13,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -93,6 +96,7 @@ public class UserService {
      * @param user 封装了用户名，手机号和密码
      * @param code  验证码
      */
+    @Transactional
     public void register(User user, String code) {
         // 1.先检验验证码是否正确这里需要从redis中去取，然后对比
         String phone = user.getPhone();
@@ -115,6 +119,26 @@ public class UserService {
         if (count != 1) {
             throw new LyException(ExceptionEnum.INSERT_OPERATION_FAIL);
         }
+
+    }
+
+    public UserDTO queryUserByUsernameAndPassword(String username, String password) {
+        // 1.创建user对象，将用户名密码封装进去
+        if (username == null && password ==null) {
+            throw new LyException(ExceptionEnum.INVALID_USERNAME_PASSWORD);
+        }
+        User u = new User();
+        u.setUsername(username);
+        // 2.查询
+        User user = userMapper.selectOne(u);
+        if (user == null) {
+            throw new LyException(ExceptionEnum.RESOURCE_NOT_FOUND);
+        }
+        // 3.检验用户名的密码是否正确
+        if (!passwordEncoder.matches(password, user.getPassword())) {
+            throw new LyException(ExceptionEnum.INVALID_USERNAME_PASSWORD);
+        }
+        return BeanHelper.copyProperties(user, UserDTO.class);
 
     }
 }

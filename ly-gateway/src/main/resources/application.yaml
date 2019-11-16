@@ -3,6 +3,8 @@ server:
 spring:
   application:
     name: ly-gateway
+  redis:
+    host: 192.168.20.110
 eureka:
   client:
     service-url:
@@ -25,3 +27,20 @@ zuul:
     upload-service: /upload/** # 将商品微服务映射到/upload/**
     search-service: /search/** # 将elasticsearch服务映射到/search/**
     user-service: /user/** # 将user服务映射到/user/**
+    auth-service: /auth/** # 将auth服务映射到/auth/**
+  sensitive-headers:
+ly:
+  jwt:
+    pubKeyPath: D:/ideawork/leyou-lg/ssh/id_rsa.pub # 公钥地址
+    user:
+      cookieName: LY_TOKEN # cookie名称
+  filter:
+    allowPaths:
+    - "*:/api/auth/login"
+    - "*:/api/auth/verify"
+    - "*:/api/search/page"
+    - "*:/api/search/filter"
+    - "*:/api/user/register"
+    - "*:/api/user/code"
+    - "*:/api/user/check"
+    - "Get:/api/item"
